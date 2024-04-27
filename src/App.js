@@ -1,5 +1,32 @@
+import { useState } from 'react';
+import { supabase } from './supabaseClient';
 import logo from './logo.svg';
 import './App.css';
+
+
+function Library() {
+  const [mySongs, setMySongs] = useState([]);
+  async function getSongs() {
+    let { data: Songs, error } = await supabase
+      .from('Songs')
+      .select('*');
+    setMySongs(Songs);
+  }
+  getSongs();
+  return (
+    <table>
+    {
+      mySongs.map(s => (
+        <tr>
+          <td>{s.title}</td>
+          <td>{s.artist}</td>
+        </tr>
+      ))
+    }
+    </table>
+  );
+}
+
 
 function App() {
   return (
@@ -15,7 +42,8 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          Learn React with Matt
+          <Library />
         </a>
       </header>
     </div>
